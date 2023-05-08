@@ -1,13 +1,14 @@
 # AIR BNB CLONE - THE CONSOLE #
-
-![The AirBnB Company Logo](./img/png-transparent-airbnb-logo-san-francisco-travel-hotel-airbnb-logo-text-trademark-logo-thumbnail.png "AirBnB")
+![HBNB Logo](./img/1.HBNB.png "HBNB")
 
 
 ## 0x00. AirBnB clone - The console ##
-
 ![Cloning Process](./img/cloning.png "Cloning")
 
 This repository hosts the preliminary phase of a project aimed at replicating the AirBnB website. At this stage, a backend console is developed to manage application data. The console enables users to create, modify, and delete objects, in addition to managing file storage. Employing JSON serialization/deserialization, the storage remains consistent across sessions.
+
+### Architecture ###
+![Arhitecture](./img/2.Architecture.png "Architecture")
 
 ### console ###
 * create your data model
