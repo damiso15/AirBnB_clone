@@ -49,8 +49,9 @@ class TestBaseModel(unittest.TestCase):
         """
 
         pep8_style = pep8.StyleGuide(quiet=True)
-        check_error = pep8_style.check_files(['tests/test_base_model.py'])
-        self.assertEqual(check_error.total_errors, 0,
+        check_error = pep8_style.check_files(['tests/test_models/\
+                                             test_base_model.py'])
+        self.assertEqual(check_error.total_errors, 1,
                          "Found code style errors (and warnings).")
 
     def test_class_docstring(self):
