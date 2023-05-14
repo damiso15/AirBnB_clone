@@ -162,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
             setattr(updated_obj, args[2], args[3])
             updated_obj.save()
 
-    def default(self, arg):
+    def onecmd(self, arg):
         """
         Called on an input line when the command prefix is not recognized.
         In this case we'll be looking for a command format:
@@ -170,15 +170,20 @@ class HBNBCommand(cmd.Cmd):
         """
 
         args = arg.split(".")
-        if len(args) < 2:
-            print("*** Unknown syntax: {}".format(line))
-            return
+        if len(args) == 2 and args[1] == "all()":
+            class_name = args[0]
+            if class_name not in self.classes:
+                print("** class doesn't exiat **")
+                return False
 
-        class_name = args[0]
-        command_parts = args[1].split("(")
-        command = command_parts[0]
-        if command == "all":
-            self.do_all(class_name)
+            all_objs = models.storage.all()
+            objs_list = []
+            for key, value in all_objs.items():
+                if class_name in key:
+                    objs_list.append(str(value))
+            print(objs_list)
+        else:
+            return super().onecmd(arg)
 
 
 if __name__ == '__main__':
