@@ -162,6 +162,24 @@ class HBNBCommand(cmd.Cmd):
             setattr(updated_obj, args[2], args[3])
             updated_obj.save()
 
+    def default(self, arg):
+        """
+        Called on an input line when the command prefix is not recognized.
+        In this case we'll be looking for a command format:
+        <class name>.<command
+        """
+
+        args = arg.split(".")
+        if len(args) < 2:
+            print("*** Unknown syntax: {}".format(line))
+            return
+
+        class_name = args[0]
+        command_parts = args[1].split("(")
+        command = command_parts[0]
+        if command == "all":
+            self.do_all(class_name)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
