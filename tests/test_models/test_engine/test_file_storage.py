@@ -1,4 +1,4 @@
-#!/usr/binpython3
+#!/usr/bin/env python3
 """
 A unitest for the Base Model
 
