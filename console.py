@@ -7,6 +7,7 @@ Authors: Sonaike Oluwadamilola
          Joseph Ocholi
 """
 import cmd
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -21,6 +22,7 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
+    classes = ["BaseModel"]
 
     def do_quit(self, args):
         """
@@ -43,31 +45,31 @@ class HBNBCommand(cmd.Cmd):
 
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """
         Creates a new instance of BaseModel, saves it (to the JSON file)
         and prints the id
         """
 
-        if len(args) == 0:
+        if not arg:
             print("** class name missing **")
-        elif args not in ["BaseModel"]:
+        elif arg not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
             new_instance = BaseModel()
             new_instance.save()
             print(new_instance.id)
 
-    def do_show(self, args):
+    def do_show(self, arg):
         """
         Prints the string representation of an instance based on the
         class name and id
         """
 
-        args = args.split()
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -79,15 +81,15 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_destroy(self, args):
+    def do_destroy(self, arg):
         """
         Deletes an instance based on the class name and id
         """
 
-        args = args.split()
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args not in ["BaseModel"]:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -106,54 +108,45 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name
         """
 
-        if arg:
-            if arg != "BaseModel":
-                print("** class doesn't exist **")
-                return
-            else:
-                obj_dict = storage.all(arg)
+        args = arg.split()
+        all_objs = storage.all()
+        objs_list = []
+        if len(args) == 0:
+            for value in all_objs.values():
+                objs_list.append(str(value))
+        elif args[0] in HBNBCommand.classes:
+            for key, value in all_objs.items():
+                if args[0] in key:
+                    objs_list.append(str(value))
         else:
-            obj_dict = storage.all()
+            print("** class doesn't exist **")
+            return False
+        print(objs_list)
 
-        obj_list = []
-        for obj in obj_dict.values():
-            obj_list.append(str(obj))
-
-        print(obj_list)
-
-
-    def do_update(self, args):
+    def do_update(self, arg):
         """
         Updates an instance based on the class name and id by adding or
         updating attribute (save the change into the JSON file)
         """
 
-        args = args.split()
+        args = shlex.split(arg)
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
+        elif args[0] + "." + args[1] not in storage.all():
+            print("** no instance found **")
+        elif len(args) == 2:
+            print("** attribut name missing **")
+        elif len(args) == 3:
+            print("** value missing **")
         else:
             key = args[0] + "." + args[1]
-            if key not in storage.all():
-                print("** no instance found **")
-            elif len(args) == 2:
-                print("** attribute name missing **")
-            elif len(args) == 3:
-                print("** value missing **")
-            else:
-                if args[3].lstrip('-').isdigit():
-                    args[3] = int(args[3])
-                elif args[3].replace('.', '', 1).lstrip('-').isdigit():
-                    args[3] = float(args[3])
-                else:
-                    args[3] = args[3].strip('"')
-
-                setattr(storage.all()[key], args[2], args[3])  # Set new attribute value
-                storage.save()
-
+            updated_obj = storage.all()[key]
+            setattr(updated_obj, args[2], args[3])
+            updated_obj.save()
 
 
 if __name__ == '__main__':
