@@ -8,7 +8,7 @@ Authors: Sonaike Oluwadamilola
 """
 import cmd
 import shlex
-from models import storage
+import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -76,7 +76,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = args[0] + "." + args[1]
-            all_objs = storage.all()
+            all_objs = models.storage.all()
             if key in all_objs:
                 print(all_objs[key])
             else:
@@ -96,10 +96,10 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = args[0] + "." + args[1]
-            all_objs = storage.all()
+            all_objs = models.storage.all()
             if key in all_objs:
                 del all_objs[key]
-                storage.save()
+                models.storage.save()
             else:
                 print("** no instance found **")
 
@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
         """
 
         args = arg.split()
-        all_objs = storage.all()
+        all_objs = models.storage.all()
         objs_list = []
         if len(args) == 0:
             for value in all_objs.values():
@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif args[0] + "." + args[1] not in storage.all():
+        elif args[0] + "." + args[1] not in models.storage.all():
             print("** no instance found **")
         elif len(args) == 2:
             print("** attribut name missing **")
@@ -145,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
         else:
             key = args[0] + "." + args[1]
-            updated_obj = storage.all()[key]
+            updated_obj = models.storage.all()[key]
             setattr(updated_obj, args[2], args[3])
             updated_obj.save()
 

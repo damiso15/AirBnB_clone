@@ -7,7 +7,8 @@ Authors: Sonaike Oluwadamilola
          Joseph Ocholi
 """
 import json
-from importlib import import_module
+from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -22,6 +23,7 @@ class FileStorage:
 
     __file_path = "file.json"
     __objects = {}
+    classes = {"BaseModel": BaseModel, "User": User}
 
     def all(self):
         """
@@ -55,15 +57,12 @@ class FileStorage:
         This method deserializes the JSON file to __objects
         """
 
-        from models.user import User
-        BaseModel = import_module('models.base_model').BaseModel
-        classes = {"BaseModel": BaseModel, "User": User}
         try:
             with open(FileStorage.__file_path, 'r') as obj:
                 json_objs = json.load(obj)
-                for key, val in json_objs.items():
-                    class_name = key.split(".")[0]
-                    if class_name in classes:
-                        FileStorage.__objects[key] = classes[class_name](**val)
+                for key, value in json_objs.items():
+                    class_name = value['__class__']
+                    instance = self.classes[class_name](**value)
+                    self.__objects[key] = instance
         except FileNotFoundError:
             pass
