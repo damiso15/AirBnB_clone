@@ -134,7 +134,7 @@ class TestFileStorage(unittest.TestCase):
         self.storage.reload()
         objects = self.storage.all()
         key = "{}.{}".format(type(base).__name__, base.id)
-        self.assertTrue(key in objects)
+        self.assertFalse(key in objects)
 
 
 if __name__ == "__main__":

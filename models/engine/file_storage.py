@@ -55,10 +55,15 @@ class FileStorage:
         This method deserializes the JSON file to __objects
         """
 
+        from models.user import User
         BaseModel = import_module('models.base_model').BaseModel
+        classes = {"BasseModel": BaseModel, "User": User}
         try:
             with open(FileStorage.__file_path, 'r') as obj:
-                FileStorage.__objects = {key: BaseModel(**value) for key,
-                                         value in json.load(obj).items()}
+                json_objs = json.load(obj)
+                for key, val in json_objs.items():
+                    class_name = key.split(".")[0]
+                    if class_name in classes:
+                        FileStorage.__objects[key] = classes[class_name](**val)
         except FileNotFoundError:
             pass
