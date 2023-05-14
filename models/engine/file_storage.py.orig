@@ -57,7 +57,7 @@ class FileStorage:
 
         from models.user import User
         BaseModel = import_module('models.base_model').BaseModel
-        classes = {"BasseModel": BaseModel, "User": User}
+        classes = {"BaseModel": BaseModel, "User": User}
         try:
             with open(FileStorage.__file_path, 'r') as obj:
                 json_objs = json.load(obj)
