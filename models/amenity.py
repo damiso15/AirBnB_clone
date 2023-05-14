@@ -1,6 +1,6 @@
-#!/usr/bin/envpython3
+#!/usr/bin/env python3
 """
-A state model
+A City model
 
 Created on: 14th of May, 2023
 Authors: Sonaike Oluwadamilola
@@ -9,12 +9,12 @@ Authors: Sonaike Oluwadamilola
 from models.base_model import BaseModel
 
 
-class State(BaseModel):
+class Amenity(BaseModel):
     """
-    A class State that inherits from BaseModel
+    A class City that inherits from BaseModel
 
     Attributes:
-    name (str): A public class attribute for the State's name
+        name (str): A public class attribute for the Amenity's name
     """
 
     name = ""

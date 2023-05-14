@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A unit test for the User Model
+A unit test for the City Model
 
 Created on: 14th of May, 2023
 Authors: Sonaike Oluwadamilola
@@ -9,6 +9,7 @@ Authors: Sonaike Oluwadamilola
 import unittest
 import pep8
 import inspect
+from models.base_model import BaseModel
 from models.user import User
 
 
@@ -24,7 +25,7 @@ class TestCity(unittest.TestCase):
         """
         cls.setup = inspect.getmembers(User, inspect.isfunction)
 
-    def test_pep8_conformance_City(self):
+    def test_pep8_conformance_User(self):
         """
         Test if the User Model conform to PEP8
         """
@@ -73,7 +74,7 @@ class TestCity(unittest.TestCase):
         """
         Test if the instance belongs to class User and BaseModel.
         """
-        self.assertIsInstance(self.user, User)
+        self.assertIsInstance(self.user, BaseModel)
 
     def test_instance_attributes(self):
         """

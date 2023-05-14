@@ -9,15 +9,19 @@ Authors: Sonaike Oluwadamilola
 from models.base_model import BaseModel
 
 
-class State(BaseModel):
+class Review(BaseModel):
     """
-    A class State that inherits from BaseModel
+    A class Review that inherits from BaseModel
 
     Attributes:
-    name (str): A public class attribute for the State's name
+        place_id (str): A public class attribute for the Review's place id
+        user_id (str): A public class attribute for the Review's user id
+        text (str): A public class attribute for the Review's text
     """
 
-    name = ""
+    place_id = ""
+    user_id = ""
+    text = ""
 
     def __init__(self, *args, **kwargs):
         """
