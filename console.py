@@ -163,38 +163,25 @@ class HBNBCommand(cmd.Cmd):
             setattr(updated_obj, args[2], args[3])
             updated_obj.save()
 
-    def default(self, line):
+    def onecmd(self, line):
         """
-        handle invalid commands and
-        special commands like <class name>.<command>()
+        Interpret the command given to the command interpreter
         """
-        match = re.fullmatch(r"[A-Za-z]+\.[A-Za-z]+\(.*?\)", line)
-        if match:
-            splited = line.split('.')
-            if splited[0] in models.dummy_classes:
-                parsed = splited[1].split("(")
-                parsed[1] = parsed[1].strip(")")
-                args = parsed[1].split(",")
-                args = [arg.strip() for arg in args]
-                if len(args) >= 3:
-                    temp = args[2]
-                    args = [arg.strip('"') for arg in args[:2]]
-                    args.append(temp)
-                else:
-                    args = [arg.strip('"') for arg in args]
-                command = self.fetch_command(parsed[0])
-                if command:
-                    reconstructed_args = [arg for arg in args]
-                    reconstructed_args.insert(0, splited[0])
-                    reconstructed_command = " ".join(reconstructed_args)
-                    command(self, reconstructed_command)
-                else:
-                    print("*** Unknown syntax: {}".format(line))
-            else:
+        args = line.split(".")
+
+        if len(args) == 2 and args[1] == "all()":
+            class_name = args[0]
+            if class_name not in self.classes:
                 print("** class doesn't exist **")
+                return False
+
+            all_objs = models.storage.all()
+            objs_list = []
+            for key, value in all_objs.items():
+                if class_name in key:
+                    objs_list.append(value)
+            print(objs_list)
+
         else:
-            print("*** Unknown syntax: {}".format(line))
+            return super().onecmd(line)
 
-
-if __name__ == '__main__':
-    HBNBCommand().cmdloop()

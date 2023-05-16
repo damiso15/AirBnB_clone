@@ -19,7 +19,6 @@ if not os.path.exists(file_path):
 if os.path.exists(file_path):
     os.remove(file_path)
 
-
 """
  Backup console file
 """
@@ -63,6 +62,7 @@ def exec_command(my_console, the_command, last_lines = 1):
     my_console.stdout = io.StringIO()
     real_stdout = sys.stdout
     sys.stdout = my_console.stdout
+    my_console.preloop()
     the_command = my_console.precmd(the_command)
     my_console.onecmd(the_command)
     sys.stdout = real_stdout
@@ -76,23 +76,15 @@ result = exec_command(my_console, "create User")
 if result is None or result == "":
     print("FAIL: No ID retrieved")
     
-with open(file_path, "r") as file:
-    s_file = file.read()
-    if result not in s_file:
-        print("FAIL: New ID not in the JSON file")
-
 model_id = result
-exec_command(my_console, "destroy User {}".format(model_id))
 
-#print("\nAfter destroy command, JSON file contents: \n")
-#with open(file_path, "r") as file:
-#    print(file.read())
-
-
-with open(file_path, "r") as file:
-    s_file = file.read()
-    if result in s_file:
-        print("\nFAIL: New ID is still in the JSON file\n")
+result = exec_command(my_console, "User.all()")
+if result is None or result == "":
+    print("FAIL: no output")
+    
+if model_id not in result:
+    print("FAIL: New ID not in the output")
+    
 print("OK", end="")
 
 shutil.copy("tmp_console_main.py", "console.py")
