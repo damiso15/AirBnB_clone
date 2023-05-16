@@ -163,12 +163,11 @@ class HBNBCommand(cmd.Cmd):
             setattr(updated_obj, args[2], args[3])
             updated_obj.save()
 
-    def onecmd(self, line):
+    def onecmd(self, arg):
         """
         Interpret the command given to the command interpreter
         """
-        args = line.split(".")
-
+        args = arg.split(".")
         if len(args) == 2 and args[1] == "all()":
             class_name = args[0]
             if class_name not in self.classes:
@@ -177,11 +176,15 @@ class HBNBCommand(cmd.Cmd):
 
             all_objs = models.storage.all()
             objs_list = []
+
             for key, value in all_objs.items():
                 if class_name in key:
-                    objs_list.append(value)
+                    objs_list.append(str(value).replace("\"", ""))
             print(objs_list)
 
         else:
-            return super().onecmd(line)
+            return super().onecmd(arg)
 
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
