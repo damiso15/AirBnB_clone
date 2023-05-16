@@ -154,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] + "." + args[1] not in models.storage.all():
             print("** no instance found **")
         elif len(args) == 2:
-            print("** attribut name missing **")
+            print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
         else:
