@@ -36,6 +36,7 @@ class TestFileStorage(unittest.TestCase):
 
         self.file_path = FileStorage._FileStorage__file_path
         self.storage = FileStorage()
+        FileStorage._FileStorage__objects.clear()
 
     def test_pep8_conformance_FileStorage(self):
         """
@@ -135,6 +136,13 @@ class TestFileStorage(unittest.TestCase):
         objects = self.storage.all()
         key = "{}.{}".format(type(base).__name__, base.id)
         self.assertTrue(key in objects)
+
+    def test_objects_empty(self):
+        """
+        This method tests if the object is an empty string
+        """
+
+        self.assertEqual(len(FileStorage.all(FileStorage)), 0)
 
 
 if __name__ == "__main__":
