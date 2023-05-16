@@ -167,8 +167,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Interpret the command given to the command interpreter
         """
-        args = arg.split(".")
-        if len(args) == 2 and args[1] == "all()":
+        args = arg.strip("()").split(".")
+        if len(args) == 2 and args[1] == "all":
             class_name = args[0]
             if class_name not in self.classes:
                 print("** class doesn't exist **")
@@ -181,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
                     objs_list.append(str(value).replace("\"", ""))
             print(objs_list)
 
-        elif len(args) == 2 and args[1] == "count()":
+        elif len(args) == 2 and args[1] == "count":
             class_name = args[0]
             if class_name not in self.classes:
                 print("** class doesn't exist **")
@@ -190,6 +190,21 @@ class HBNBCommand(cmd.Cmd):
             all_objs = models.storage.all()
             count = sum(class_name in key for key in all_objs)
             print(count)
+
+        elif len(args) == 2 and "show" in args[1]:
+            class_name = args[0]
+            instance_id = args[1].split("\"")[1]
+            if class_name not in self.classes:
+                print("** class doesn't exist **")
+                return False
+
+            key = class_name + "." + instance_id
+            all_objs = models.storage.all()
+            if key not in all_objs:
+                print("** no instance found **")
+                return False
+
+            print(all_objs[key])
 
         else:
             return super().onecmd(arg)

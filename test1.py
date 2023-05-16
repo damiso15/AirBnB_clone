@@ -72,18 +72,17 @@ def exec_command(my_console, the_command, last_lines = 1):
 """
  Tests
 """
-result = exec_command(my_console, "create User")
+result = exec_command(my_console, "create BaseModel")
 if result is None or result == "":
     print("FAIL: No ID retrieved")
     
-model_id = result
 
-result = exec_command(my_console, "User.all()")
+result = exec_command(my_console, "BaseModel.count()")
 if result is None or result == "":
     print("FAIL: no output")
     
-if model_id not in result:
-    print("FAIL: New ID not in the output")
+if int(result) == 0:
+    print("FAIL: count should not be 0")
     
 print("OK", end="")
 
