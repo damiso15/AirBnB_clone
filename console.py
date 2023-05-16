@@ -176,11 +176,20 @@ class HBNBCommand(cmd.Cmd):
 
             all_objs = models.storage.all()
             objs_list = []
-
             for key, value in all_objs.items():
                 if class_name in key:
                     objs_list.append(str(value).replace("\"", ""))
             print(objs_list)
+
+        elif len(args) == 2 and args[1] == "count()":
+            class_name = args[0]
+            if class_name not in self.classes:
+                print("** class doesn't exist **")
+                return False
+
+            all_objs = models.storage.all()
+            count = sum(class_name in key for key in all_objs)
+            print(count)
 
         else:
             return super().onecmd(arg)
