@@ -206,6 +206,22 @@ class HBNBCommand(cmd.Cmd):
 
             print(all_objs[key])
 
+        elif len(args) == 2 and "destroy" in args[1]:
+            class_name = args[0]
+            instance_id = args[1].split("\"")[1]
+            if class_name not in self.classes:
+                print("** class doesn't exist **")
+                return False
+
+            key = class_name + "." + instance_id
+            all_objs = models.storage.all()
+            if key not in all_objs:
+                print("** no instance found **")
+                return False
+
+            del all_objs[key]
+            models.storage.save()
+
         else:
             return super().onecmd(arg)
 
