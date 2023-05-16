@@ -222,6 +222,27 @@ class HBNBCommand(cmd.Cmd):
             del all_objs[key]
             models.storage.save()
 
+        elif len(args) == 2 and "update" in args[1]:
+            class_name = args[0]
+            instance_id, attr_name, attr_val = re.findall(r'"(.*?)"', args[1])
+            if class_name not in self.classes:
+                print("** class doesn't exist **")
+                return False
+
+            key = class_name + "." + instance_id
+            all_objs = models.storage.all()
+            if key not in all_objs:
+                print("** no instance found **")
+                return False
+
+            obj = all_objs[key]
+            if attr_name in obj.__class__.__dict__.keys() or\
+               isinstance(attr_val, type(obj.__class__.__dict__[attr_name])):
+                setattr(obj, attr_name, attr_val)
+                obj.save()
+            else:
+                print("** value doesn't match the attribute type **")
+
         else:
             return super().onecmd(arg)
 
