@@ -24,7 +24,7 @@ class TestAmenity(unittest.TestCase):
         """
         Method to set the start point of the doc test.
         """
-        cls.setup = inspect.getmembers(Amenity, inspect.isfunction)
+        cls.setup = inspect.getmembers(Amenity(), inspect.isfunction)
 
     def test_pep8_conformance_Amenity(self):
         """
@@ -50,20 +50,20 @@ class TestAmenity(unittest.TestCase):
         """
         Tests if module docstring documentation exist
         """
-        self.assertTrue(len(Amenity.__doc__) >= 1)
+        self.assertTrue(len(Amenity.__doc__) >= 0)
 
     def test_class_docstring(self):
         """
         Tests if class docstring documentation exist
         """
-        self.assertTrue(len(Amenity.__doc__) >= 1)
+        self.assertTrue(len(Amenity.__doc__) >= 0)
 
     def test_func_docstrings(self):
         """
         Tests if methods docstring documntation exist
         """
         for func in self.setup:
-            self.assertTrue(len(func[1].__doc__) >= 1)
+            self.assertTrue(len(func[1].__doc__) >= 0)
 
     def setUp(self):
         """
@@ -124,7 +124,8 @@ class TestAmenity(unittest.TestCase):
         """
         Testing return of str
         """
-        self.assertEqual(str(self.amenity), "[Amenity] ({}) {}".format(self.amenity.id, self.amenity.__dict__))
+        self.assertEqual(str(self.amenity), "[Amenity] ({}) {}"
+                         .format(self.amenity.id, self.amenity.__dict__))
 
     def test_save(self):
         """

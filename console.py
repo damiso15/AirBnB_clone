@@ -10,6 +10,7 @@ import cmd
 import shlex
 import models
 import re
+import ast
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -77,8 +78,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """
-        Prints the string representation of an instance based on the
-        class name and id
+        Prints the string representation of an instance
+        based on the class name and id
         """
 
         args = arg.split()
@@ -223,23 +224,15 @@ class HBNBCommand(cmd.Cmd):
             models.storage.save()
 
         elif len(args) == 2 and "update" in args[1]:
-            class_name = args[0]
-            instance_id, attr_name, attr_val = re.findall(r'"(.*?)"', args[1])
-            if class_name not in self.classes:
-                print("** class doesn't exist **")
-                return False
-
-            key = class_name + "." + instance_id
-            all_objs = models.storage.all()
-            if key not in all_objs:
-                print("** no instance found **")
-                return False
-
             obj = all_objs[key]
-            setattr(obj, attr_name, attr_val)
+            update_dict = ast.literal_eval(dictionary_str)
+            for attr_name, attr_val in update_dict.items():
+                setattr(obj, attr_name, attr_val)
             obj.save()
 
         else:
             return super().onecmd(arg)
 
 
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()

@@ -236,6 +236,7 @@ class HBNBCommand(cmd.Cmd):
                 return False
 
             obj = all_objs[key]
+            if len
             setattr(obj, attr_name, attr_val)
             obj.save()
 
@@ -243,3 +244,5 @@ class HBNBCommand(cmd.Cmd):
             return super().onecmd(arg)
 
 
+if __name__ == '__main__':	
+    HBNBCommand().cmdloop()	
